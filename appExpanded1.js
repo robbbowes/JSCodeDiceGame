@@ -2,11 +2,9 @@
 GAME RULES:
 
 - The game has 2 players, playing in rounds
-- In each turn, a player rolls a dice as many times as he whishes. Each result get added to his ROUND score
-- BUT, if the player rolls a 1, all his ROUND score gets lost. After that, it's the next player's turn
-- The player can choose to 'Hold', which means that his ROUND score gets added to his GLOBAL score. After that, it's the next player's turn
-- The first player to reach 100 points on GLOBAL score wins the game
-- If a player rolls two 6's ina  row, their entire score is lost
+- In each turn, a player rolls a dice as many times as he/she wishes. Each result get added to his/her ROUND score
+- BUT, if the player rolls a 1, the ROUND score is lost. After that, it's the next player's turn
+- The player can choose to 'Hold', which means that his ROUND score gets added to his/her GLOBAL score. After that, it's the next player's turn
 
 */
 
@@ -16,9 +14,7 @@ init();
 
 document.querySelector('.btn-roll').addEventListener('click', function () {
     if (gameActive) {
-        //        var dice = Math.floor(Math.random() * 6) + 1;
-        var dice = 6;
-
+        var dice = Math.floor(Math.random() * 6) + 1;
         var diceDOM = document.querySelector('.dice');
         diceDOM.style.display = 'block';
         diceDOM.src = 'dice-' + dice + '.png';
