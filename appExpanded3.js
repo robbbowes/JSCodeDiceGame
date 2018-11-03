@@ -5,32 +5,33 @@ GAME RULES:
 - In each turn, a player rolls a dice as many times as he whishes. Each result get added to his ROUND score
 - BUT, if the player rolls a 1, all his ROUND score gets lost. After that, it's the next player's turn
 - The player can choose to 'Hold', which means that his ROUND score gets added to his GLOBAL score. After that, it's the next player's turn
-- The first player to reach 100 points on GLOBAL score wins the game
-- If a player rolls two 6's ina  row, their entire score is lost
+- The players can decide the total number of points needed, the first player to reach this number points on GLOBAL score wins the game
 
 */
 
-var scores, roundScore, activePlayer, gameActive, lastRoll;
+var scores, roundScore, activePlayer, gameActive;
 
 init();
 
 document.querySelector('.btn-roll').addEventListener('click', function () {
     if (gameActive) {
-        //        var dice = Math.floor(Math.random() * 6) + 1;
-        var dice = 6;
+        var dice1 = Math.floor(Math.random() * 6) + 1;
+        var dice2 = Math.floor(Math.random() * 6) + 1;
 
-        var diceDOM = document.querySelector('.dice');
-        diceDOM.style.display = 'block';
-        diceDOM.src = 'dice-' + dice + '.png';
+        var dice1DOM = document.getElementById('dice-1');
+        var dice2DOM = document.getElementById('dice-2');
+        dice1DOM.style.display = 'block';
+        dice2DOM.style.display = 'block';
+        dice1DOM.src = 'dice-' + dice1 + '.png';
+        dice2DOM.src = 'dice-' + dice2 + '.png';
 
-        if (dice === 6 && lastRoll === 6) {
+        if (dice1 === 6 && dice2 === 6) {
             scores[activePlayer] = 0;
             document.querySelector('#score-' + activePlayer).textContent = '0';
             nextPlayer();
-        } else if (dice !== 1) {
-            roundScore += dice;
+        } else if (dice1 !== 1 && dice2 !== 1) {
+            roundScore += (dice1 + dice2) ;
             document.getElementById('current-' + activePlayer).textContent = roundScore;
-            lastRoll = dice;
         } else {
             nextPlayer();
         }
@@ -39,13 +40,22 @@ document.querySelector('.btn-roll').addEventListener('click', function () {
 
 document.querySelector('.btn-hold').addEventListener('click', function () {
     if (gameActive) {
-        scores[activePlayer] += roundScore;
 
+        scores[activePlayer] += roundScore;
         document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
 
-        if (scores[activePlayer] >= 100) {
+        var input = document.querySelector('.goal-score').value;
+        var winningScore;
+        if (input) {
+            winningScore = input;
+        } else {
+            winningScore = 100;
+        }
+
+        if (scores[activePlayer] >= winningScore) {
             document.getElementById('name-' + activePlayer).textContent = 'Winner!';
-            document.querySelector('.dice').style.display = 'none';
+            document.querySelector('.dice-1').style.display = 'none';
+            document.querySelector('.dice-2').style.display = 'none';
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
             document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
             gameActive = false;
@@ -59,13 +69,13 @@ document.querySelector('.btn-new').addEventListener('click', init);
 
 function nextPlayer() {
     roundScore = 0;
-    lastRoll = 0;
     document.getElementById('current-' + activePlayer).textContent = '0';
     document.querySelector('.player-' + activePlayer + '-panel').classList.toggle('active');
 
     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
     document.querySelector('.player-' + activePlayer + '-panel').classList.toggle('active');
-    document.querySelector('.dice').style.display = 'none';
+    document.getElementById('dice-1').style.display = 'none';
+    document.getElementById('dice-2').style.display = 'none';
 };
 
 function init() {
@@ -74,7 +84,8 @@ function init() {
     roundScore = 0;
     activePlayer = 0;
 
-    document.querySelector('.dice').style.display = 'none';
+    document.getElementById('dice-1').style.display = 'none';
+    document.getElementById('dice-2').style.display = 'none';
     document.getElementById('score-0').textContent = '0';
     document.getElementById('score-1').textContent = '0';
     document.getElementById('current-0').textContent = '0';

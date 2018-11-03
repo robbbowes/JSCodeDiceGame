@@ -62,7 +62,6 @@ function nextPlayer() {
 
 function init() {
     gameActive = true;
-    gameActive = true;
     scores = [0, 0];
     roundScore = 0;
     activePlayer = 0;
